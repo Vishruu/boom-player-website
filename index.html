@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boom Player — Music, Your Way</title>
+<meta name="description" content="Boom Player — a powerful local music player for Android with custom DSP engine, 10-band equalizer, and real-time visualizer.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0a;
+  --card:#151518;
+  --card2:#1c1c20;
+  --accent:#BB86FC;
+  --accent2:#9C6FDB;
+  --text:#ffffff;
+  --muted:#8a8a92;
+  --border:#26262b;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* Nav */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,10,10,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+nav .container{
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-weight:700;font-size:17px;letter-spacing:-0.3px;
+}
+.logo-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+nav a{
+  color:var(--muted);text-decoration:none;font-size:14px;
+  margin-left:24px;transition:color .2s;
+}
+nav a:hover{color:var(--text)}
+.nav-links{display:none}
+@media(min-width:640px){.nav-links{display:block}}
+
+/* Hero */
+.hero{
+  padding:80px 0 60px;text-align:center;
+  position:relative;
+}
+.hero::before{
+  content:"";position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(187,134,252,.15),transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.hero .container{position:relative;z-index:1}
+.hero-icon{
+  width:120px;height:120px;border-radius:26px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:64px;margin-bottom:28px;
+  box-shadow:0 20px 60px rgba(187,134,252,.35);
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.hero h1{
+  font-size:clamp(34px,6vw,54px);
+  font-weight:800;letter-spacing:-1.5px;
+  margin-bottom:14px;
+  background:linear-gradient(135deg,#fff 30%,var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero p{
+  font-size:clamp(15px,2vw,18px);
+  color:var(--muted);max-width:560px;
+  margin:0 auto 36px;
+}
+.buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 26px;border-radius:14px;
+  font-size:15px;font-weight:600;text-decoration:none;
+  transition:all .2s;border:none;cursor:pointer;
+  font-family:inherit;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;
+  box-shadow:0 8px 24px rgba(187,134,252,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(187,134,252,.5)}
+.btn-secondary{
+  background:var(--card);color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover{background:var(--card2);border-color:var(--accent)}
+
+.badge{
+  display:inline-block;padding:5px 12px;border-radius:20px;
+  background:rgba(187,134,252,.12);
+  border:1px solid rgba(187,134,252,.3);
+  color:var(--accent);font-size:12px;font-weight:600;
+  margin-bottom:20px;letter-spacing:.3px;
+}
+
+/* Sections */
+section{padding:70px 0}
+.section-title{
+  text-align:center;font-size:clamp(26px,4vw,36px);
+  font-weight:700;letter-spacing:-1px;margin-bottom:12px;
+}
+.section-sub{
+  text-align:center;color:var(--muted);
+  font-size:15px;margin-bottom:52px;max-width:520px;
+  margin-left:auto;margin-right:auto;
+}
+
+/* Features */
+.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+}
+.feature{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:24px;
+  transition:all .25s;
+}
+.feature:hover{
+  border-color:rgba(187,134,252,.4);
+  transform:translateY(-3px);
+  background:var(--card2);
+}
+.feature-icon{
+  width:46px;height:46px;border-radius:12px;
+  background:rgba(187,134,252,.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:16px;
+}
+.feature h3{
+  font-size:16px;font-weight:600;margin-bottom:6px;
+  letter-spacing:-0.2px;
+}
+.feature p{color:var(--muted);font-size:14px;line-height:1.5}
+
+/* Screenshots */
+.shots{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
+}
+.shot{
+  aspect-ratio:9/19;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);
+  font-size:13px;
+  overflow:hidden;
+  position:relative;
+}
+.shot::after{
+  content:attr(data-label);
+  position:absolute;bottom:14px;
+  padding:5px 12px;border-radius:10px;
+  background:rgba(0,0,0,.7);color:var(--text);
+  font-size:11px;font-weight:600;
+}
+
+/* Download */
+.download-card{
+  background:linear-gradient(135deg,rgba(187,134,252,.08),rgba(156,111,219,.04));
+  border:1px solid rgba(187,134,252,.25);
+  border-radius:24px;
+  padding:48px 32px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.download-card::before{
+  content:"";position:absolute;top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:radial-gradient(circle,rgba(187,134,252,.08),transparent 60%);
+  pointer-events:none;
+}
+.download-card > *{position:relative;z-index:1}
+.download-card h2{
+  font-size:clamp(24px,3.5vw,32px);
+  font-weight:700;letter-spacing:-0.8px;margin-bottom:10px;
+}
+.download-card p{color:var(--muted);font-size:15px;margin-bottom:28px}
+.info-row{
+  display:flex;gap:24px;justify-content:center;flex-wrap:wrap;
+  margin-top:28px;font-size:13px;color:var(--muted);
+}
+.info-row span{display:flex;align-items:center;gap:6px}
+
+/* Footer */
+footer{
+  border-top:1px solid var(--border);
+  padding:32px 0;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer .heart{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-icon">🎵</div>
+      Boom Player
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="#download">Download</a>
+      <a href="https://github.com/Vishruu/boom-player" target="_blank">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="badge">v1.0 — Now Available</div>
+    <div class="hero-icon">🎵</div>
+    <h1>Boom Player</h1>
+    <p>A powerful local music player for Android — with a custom DSP engine, real 10-band equalizer, and real-time visualizer that actually work.</p>
+    <div class="buttons">
+      <a href="https://github.com/Vishruu/boom-player/releases/latest" class="btn btn-primary" id="downloadBtn">
+        ⬇ Download APK
+      </a>
+      <a href="https://github.com/Vishruu/boom-player" class="btn btn-secondary" target="_blank">
+        View Source
+      </a>
+    </div>
+    <div class="info-row">
+      <span>📱 Android 7.0+</span>
+      <span>🎧 Offline playback</span>
+      <span>💜 Free</span>
+    </div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="container">
+    <h2 class="section-title">Built for music lovers</h2>
+    <p class="section-sub">Every feature works — no gimmicks, no paywalls.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🎚️</div>
+        <h3>10-Band Equalizer</h3>
+        <p>Real DSP with BiquadFilter. Works on any device, saves your settings.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔊</div>
+        <h3>Bass Boost</h3>
+        <p>Low-shelf filter that actually changes the sound. Tuned for real speakers.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>Live Visualizer</h3>
+        <p>Bars, waveform, and pulse styles — computed from your own audio in real-time.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📚</div>
+        <h3>Full Library</h3>
+        <p>Folders, albums, artists, years, playlists, favorites, recently played.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔔</div>
+        <h3>Rich Notification</h3>
+        <p>Album art, playback controls, works on lock screen.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎨</div>
+        <h3>Themes</h3>
+        <p>11 accent colors, custom visualizer styles, album art shapes.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🌙</div>
+        <h3>Sleep Timer</h3>
+        <p>Gentle fade-out and pause. Perfect for bedtime listening.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎤</div>
+        <h3>Voice Control</h3>
+        <p>Say "play", "next", "volume 50" — hands-free control.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📝</div>
+        <h3>Lyrics & Bookmarks</h3>
+        <p>Synced lyrics, save any position in any song, edit metadata.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="screenshots">
+  <div class="container">
+    <h2 class="section-title">Take a look</h2>
+    <p class="section-sub">Clean, dark, focused on your music.</p>
+    <div class="shots">
+      <div class="shot" data-label="Now Playing"></div>
+      <div class="shot" data-label="Equalizer"></div>
+      <div class="shot" data-label="Library"></div>
+      <div class="shot" data-label="Visualizer"></div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="container">
+    <div class="download-card">
+      <h2>Ready to listen?</h2>
+      <p>Download the latest APK and start playing your music the way it should be.</p>
+      <a href="https://github.com/Vishruu/boom-player/releases/latest" class="btn btn-primary" style="font-size:16px;padding:16px 32px">
+        ⬇ Download for Android
+      </a>
+      <div class="info-row">
+        <span>🔒 Signed build</span>
+        <span>💾 ~20 MB</span>
+        <span>🆓 Free forever</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>Made with <span class="heart">♥</span> by <a href="https://github.com/Vishruu" target="_blank">Vishruu</a></p>
+    <p style="margin-top:8px">
+      <a href="https://github.com/Vishruu/boom-player" target="_blank">Source</a> · 
+      <a href="https://github.com/Vishruu/boom-player/releases" target="_blank">Releases</a> · 
+      <a href="https://github.com/Vishruu/boom-player/issues" target="_blank">Issues</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
